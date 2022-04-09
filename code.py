@@ -30,17 +30,17 @@ def bot1(message):
         elif message.text == '☺ Какие дела?':
 
             markup = types.InlineKeyboardMarkup(row_width=3)
-            item1 = types.InlineKeyboardMarkup('Хорошо', callback_data='good')
-            item2 = types.InlineKeyboardMarkup('Средене', callback_data='medium')
-            item3 = types.InlineKeyboardMarkup('Плохо', callback_data='bad')
+            item1 = types.InlineKeyboardButton('Хорошо', callback_data='good')
+            item2 = types.InlineKeyboardButton('Средене', callback_data='medium')
+            item3 = types.InlineKeyboardButton('Плохо', callback_data='bad')
 
             markup.add(item1, item2, item3)
 
-            bot.send_message(message.chat.id, 'Отлично сам как?')
+            bot.send_message(message.chat.id, 'Отлично сам как?', reply_markup=markup)
         else:
             bot.send_message(message.chat.id, 'Я не знаю что ответить 😔')
 
-@bot.callback_query_handlers(func=lambda call: True)
+@bot.callback_query_handler(func=lambda call: True)
 def callback_inline(call):
     try:
         if call.message:
@@ -55,7 +55,7 @@ def callback_inline(call):
             bot.edit_message_text(chat_id=call.message.chat.id, message_id=call.message.message_id, text='☺ Какие дела?', reply_markup=None)
 
             # show alert
-            bot.answer_callback_query(chat_id=call.message.chat.id, show_alert=False, text='Это тестовое уведомление!!!')
+            bot.answer_callback_query(callback_query_id=call.id, show_alert=True, text='Ты крутой и прошёл наш тест на настроение!!!')
 
     except Exception as e:
         print(repr(e))
