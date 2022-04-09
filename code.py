@@ -28,9 +28,37 @@ def bot1(message):
         if message.text == '🔍 Поиск рандомного числа...':
             bot.send_message(message.chat.id, str(random.randint(0, 100)))
         elif message.text == '☺ Какие дела?':
+
+            markup = types.InlineKeyboardMarkup(row_width=3)
+            item1 = types.InlineKeyboardMarkup('Хорошо', callback_data='good')
+            item2 = types.InlineKeyboardMarkup('Средене', callback_data='medium')
+            item3 = types.InlineKeyboardMarkup('Плохо', callback_data='bad')
+
+            markup.add(item1, item2, item3)
+
             bot.send_message(message.chat.id, 'Отлично сам как?')
         else:
             bot.send_message(message.chat.id, 'Я не знаю что ответить 😔')
+
+@bot.callback_query_handlers(func=lambda call: True)
+def callback_inline(call):
+    try:
+        if call.message:
+            if call.data == 'good':
+                bot.send_message(call.message.chat.id, 'Вот и отлично 😀')
+            elif call.data == 'medium':
+                bot.send_message(call.message.chat.id, 'Держись 😉')
+            elif call.data == 'bad':
+                bot.send_message(call.message.chat.id, 'Бывает 😢')
+
+            # remove inline buttons
+            bot.edit_message_text(chat_id=call.message.chat.id, message_id=call.message.message_id, text='☺ Какие дела?', reply_markup=None)
+
+            # show alert
+            bot.answer_callback_query(chat_id=call.message.chat.id, show_alert=False, text='Это тестовое уведомление!!!')
+
+    except Exception as e:
+        print(repr(e))
 
 # RUN
 bot.polling(none_stop=True)
