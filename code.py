@@ -31,7 +31,7 @@ def bot1(message):
 
             markup = types.InlineKeyboardMarkup(row_width=3)
             item1 = types.InlineKeyboardButton('Хорошо', callback_data='good')
-            item2 = types.InlineKeyboardButton('Средене', callback_data='medium')
+            item2 = types.InlineKeyboardButton('Средне', callback_data='medium')
             item3 = types.InlineKeyboardButton('Плохо', callback_data='bad')
 
             markup.add(item1, item2, item3)
